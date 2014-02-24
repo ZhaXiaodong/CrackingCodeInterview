@@ -30,8 +30,8 @@ void Reverse(Node* root)
     {
         Node* next = cur->next;
         cur->next = prev;
-        cur = next;
         prev = cur;    
+        cur = next;
     }
 
     return prev;
