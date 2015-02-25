@@ -1,67 +1,38 @@
-#include <iostream>
+#include <string>
 #include <vector>
+#include <iostream>
+
 using namespace std;
 
-vector<vector<int> > getSubsets(vector<int> a){
-    //base case
-    //if there is just one item then its subsets are that item and empty item
-    //for example all subsets of {1} are {1}, {}
-    if(a.size() == 1){
-        vector<vector<int> > temp;
-        temp.push_back(a);
-
-        vector<int> b;
-        temp.push_back(b);
-
-        return temp;
-    }
-    else
-    {
-        //here is what i am doing
-        // getSubsets({1, 2, 3})
-        //without = getSubsets({1, 2})
-        //without = {1}, {2}, {}, {1, 2}
-        //with = {1, 3}, {2, 3}, {3}, {1, 2, 3}
-        //total = {{1}, {2}, {}, {1, 2}, {1, 3}, {2, 3}, {3}, {1, 2, 3}}
-        //return total
-
-        int last = a[a.size() - 1];
-        a.pop_back();
-        vector<vector<int> > without = getSubsets(a);
-        vector<vector<int> > with = without;
-        for(int i=0;i<without.size();i++){
-            with[i].push_back(last);
-        }
-        vector<vector<int> > total;
-        for(int j=0;j<without.size();j++){
-            total.push_back(without[j]);
-        }
-        for(int k=0;k<with.size();k++){
-            total.push_back(with[k]);
-        }
-        return total;
-    }
+vector<vector<string>> GetSubSet(vector<string> v) {
+  if (v.empty()) return {{""}};
+  auto last = v.back();
+  v.pop_back();
+  
+  auto without = GetSubSet(v);
+  auto with = vector<vector<string>>{};
+  for (auto& s : without) {
+    with.push_back(s);
+    with.back().push_back(last);
+  }
+  
+  without.insert(without.end(), with.begin(), with.end());
+  
+  return without;
 }
 
-
-int main(void)
-{
-    vector<int>    vec;
-    vec.push_back(1);
-    vec.push_back(2);
-    vec.push_back(3);
-
-    vector<vector<int> > result = getSubsets(vec);
-    for(int i=0; i < result.size(); ++i)
-    {
-        vector<int>& inVec = result[i];    
-        for(int j=0; j < inVec.size(); ++j )
-        {
-            cout << inVec[j] << "\t";
-        }
-        cout << endl;
+int main(void) {
+  auto result = GetSubSet({"foo", "bar", "haha"});
+  
+  for (auto& i : result) {
+    for (auto& j : i) {
+      cout << j << "\t";
     }
+    cout << endl;
+  }
+  
+  return 0;
 
-   return 0; 
 }
+
 
